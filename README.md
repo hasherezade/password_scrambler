@@ -1,6 +1,6 @@
 Password scrambler
 ==========
-Small utility to make generate complicated passwords<br/>
+Small utility to generate complicated passwords<br/>
 
 Benefits:
 -
