@@ -7,6 +7,7 @@ Benefits:
 + You get <b>more secure password</b>- long, not from dictionary, etc i.e 'txork9Zfa8yXc_lMbb1LCHPZIH7wE1'<br/>
 + Yet, <b>you don't have to remeber it</b> - you must remember only your easy password and document that you used as a generation base<br/>
 + It is not saving your complicated password anywhere, so nobody can steal it and decrypt - it generates it by hasing function and you just need to copy it and login where you want<br/>
++ Open source, written in python - nothing is hidden under the hood, <b>everyone can review it before using</b> and make custom changes in code</br>
 
 How it works:
 -
