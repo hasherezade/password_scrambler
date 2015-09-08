@@ -1,7 +1,7 @@
 Password scrambler
 ==========
 Small utility to generate complicated passwords<br/>
-(see also the GUI version: https://github.com/hasherezade/jpassword_scrambler )<br/>
+(see also the GUI edition: https://github.com/hasherezade/jpassword_scrambler )<br/>
 
 Benefits:
 -
