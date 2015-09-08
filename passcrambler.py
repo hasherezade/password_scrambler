@@ -28,9 +28,6 @@ class AESCipher:
 ###
 
 def scramble(key):
-    md_str = hashlib.sha512(key).digest()
-    key2 = str_to_bytesstr(md_str)
-    key3 = str_to_bytesstr(key)
     result = hashlib.md5(key).digest()
     return result
 
