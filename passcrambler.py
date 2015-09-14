@@ -30,12 +30,6 @@ def scramble(key):
     result = hashlib.md5(key).digest()
     return result
 
-def str_to_bytesstr(string):
-    bytes = list()
-    for c in string:
-        bytes.append(ord(c))
-    return "".join("%02x" % b for b in bytes)
-
 ###
 
 def get_raw_bytes(filename, offset=0):
@@ -44,12 +38,6 @@ def get_raw_bytes(filename, offset=0):
     data = fo.read()
     fo.close()
     return data
-
-def str_to_bytesstr(string):
-    bytes = list()
-    for c in string:
-        bytes.append(ord(c))
-    return "".join("%02x" % b for b in bytes)
 
 def convert_to_charset(password, specialchars):
     output = ""
