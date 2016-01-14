@@ -1,5 +1,10 @@
 #!/usr/bin/env python
 
+from __future__ import unicode_literals
+from __future__ import print_function
+
+from builtins import bytes
+
 import sys
 import os
 import argparse
@@ -12,7 +17,7 @@ from Crypto.Cipher import AES
 # AES:
 
 BLOCK_SIZE = 16
-pad = lambda s: s + (BLOCK_SIZE - len(s) % BLOCK_SIZE) * chr(BLOCK_SIZE - len(s) % BLOCK_SIZE)
+pad = lambda s: s + ((BLOCK_SIZE - len(s) % BLOCK_SIZE) * chr(BLOCK_SIZE - len(s) % BLOCK_SIZE)).encode()
 
 class AESCipher:
     def __init__( self, seed, key ):
@@ -27,8 +32,8 @@ class AESCipher:
 ###
 
 def scramble(key):
-    result = hashlib.md5(key).digest()
-    return result
+    result = hashlib.md5(key.encode()).digest()
+    return bytes(result)
 
 ###
 
@@ -82,15 +87,15 @@ def main():
     aes_out2 = aes.encrypt(aes_out1)
     del aes
     
-    start = ord(key[0]) % len(aes_out2)
+    start = key[0] % len(aes_out2)
     portion = aes_out2[start:]
     result = hashlib.sha512(portion).digest()
     longpass = base64.b64encode(result)
     longpass = longpass[0:args.length]
-    longpass = convert_to_charset(longpass, args.special)
-    print "---"
-    print longpass
-    print "---"
+    longpass = convert_to_charset(longpass.decode(), args.special)
+    print("---")
+    print(longpass)
+    print("---")
 
 if __name__ == "__main__":
     main()
