@@ -1,26 +1,18 @@
 #!/usr/bin/env python
 
-from __future__ import unicode_literals
-from __future__ import print_function
-
-from builtins import bytes
-
 import sys
 import os
 import argparse
 import getpass
 import base64
 import hashlib
-
-from itertools import cycle
-
 from Crypto.Cipher import AES
 
 ###
 # AES:
 
 BLOCK_SIZE = 16
-pad = lambda s: s + ((BLOCK_SIZE - len(s) % BLOCK_SIZE) * chr(BLOCK_SIZE - len(s) % BLOCK_SIZE)).encode()
+pad = lambda s: s + (BLOCK_SIZE - len(s) % BLOCK_SIZE) * chr(BLOCK_SIZE - len(s) % BLOCK_SIZE)
 
 class AESCipher:
     def __init__( self, seed, key ):
@@ -35,8 +27,8 @@ class AESCipher:
 ###
 
 def scramble(key):
-    result = hashlib.md5(key.encode()).digest()
-    return bytes(result)
+    result = hashlib.md5(key).digest()
+    return result
 
 ###
 
@@ -47,24 +39,23 @@ def get_raw_bytes(filename, offset=0):
     fo.close()
     return data
 
-def convert_to_charset(password, specialchars, must_include):
+def convert_to_charset(password, specialchars):
     output = ""
-    specialchars_iterator = cycle(sorted(specialchars))
-    must_include_iterator = iter(sorted(must_include))
-    for i, c in enumerate(password):
-        if i % 2 and must_include:
-            try:
-                output += next(must_include_iterator)
-            except StopIteration:
-                pass
-
-        if c.isalnum():
+    i = 0
+    for c in password:
+        if c >= 'A' and c <= 'Z':
             output += c
             continue
-        try:
-            output += next(specialchars_iterator)
-        except StopIteration:
-            pass
+        if c >= 'a' and c <= 'z':
+            output += c
+            continue
+        if c >= '0' and c <= '9':
+            output += c
+            continue
+        output += specialchars[i]
+        i += 1
+        if i == len(specialchars):
+            i = 0
     return output        
    
 def main():
@@ -72,10 +63,6 @@ def main():
     parser.add_argument('--file', dest="file", default=None, help="File used to initialize generation", required=True)
     parser.add_argument('--login', dest="login", default=None, help="Login for which you want to use the password", required=True)
     parser.add_argument('--special', dest="special", default="_&#", help="Whitelist of special characters, i.e: '_&#'")
-    parser.add_argument('--must-include',
-                        dest="must_include",
-                        default="",
-                        help="A list of characters that must be included in the generated password")
     parser.add_argument('--length', dest="length", default=30, help="Length of the password, default=30", type=int)
     args = parser.parse_args()
 
@@ -95,16 +82,15 @@ def main():
     aes_out2 = aes.encrypt(aes_out1)
     del aes
     
-    start = key[0] % len(aes_out2)
+    start = ord(key[0]) % len(aes_out2)
     portion = aes_out2[start:]
     result = hashlib.sha512(portion).digest()
     longpass = base64.b64encode(result)
     longpass = longpass[0:args.length]
-    longpass = convert_to_charset(longpass.decode(), args.special, args.must_include)
-    longpass = longpass[0:args.length]
-    print("---")
-    print(longpass)
-    print("---")
+    longpass = convert_to_charset(longpass, args.special)
+    print "---"
+    print longpass
+    print "---"
 
 if __name__ == "__main__":
     main()
