@@ -87,7 +87,7 @@ def main():
     result = hashlib.sha512(portion).digest()
     longpass = base64.b64encode(result)
     longpass = longpass[0:args.length]
-    longpass = convert_to_charset(longpass, args.special)
+    longpass = convert_to_charset(longpass,  sorted(args.special, reverse=True))
     print "---"
     print longpass
     print "---"
