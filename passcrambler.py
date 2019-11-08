@@ -6,6 +6,7 @@ import argparse
 import getpass
 import base64
 import hashlib
+import pyperclip
 from Crypto.Cipher import AES
 
 ###
@@ -56,6 +57,7 @@ def main():
         parser.add_argument('--login', dest="login", default=None, help="Login for which you want to use the password", required=True)
         parser.add_argument('--special', dest="special", default="_&#", help="Whitelist of special characters, i.e: '_&#'")
         parser.add_argument('--length', dest="length", default=30, help="Length of the password, default=30", type=int)
+        parser.add_argument('--clip', dest="clip", default=False, help="Copy the generated password into the clipboard instead of displaying", required=False, action="store_true")
         parser.add_argument('--scramble-func', dest="func", default='md5', help="Hashing function to use for input data scrambling, default=md5.\nOther functions can be found on hashlib module documentation.")
         args = parser.parse_args()
 
@@ -83,8 +85,13 @@ def main():
         longpass = convert_to_charset(longpass,  sorted(args.special, reverse=True))
 
         print("---")
-        print(longpass)
-        print("---")
+        if not args.clip:
+            print("---")
+            print(longpass)
+            print("---")
+        else:
+            pyperclip.copy(longpass)
+            print("<the generated password is in your clipboard>")
 
     except Exception as e:
         print("[ERROR] %s" % e)
