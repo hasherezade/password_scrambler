@@ -86,7 +86,6 @@ def main():
 
         print("---")
         if not args.clip:
-            print("---")
             print(longpass)
             print("---")
         else:
