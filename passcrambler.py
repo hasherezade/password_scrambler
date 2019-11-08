@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3
 
 import sys
 import os
@@ -11,7 +11,7 @@ from Crypto.Cipher import AES
 ###
 # AES:
 
-pad = lambda s: s + (AES.block_size - len(s) % AES.block_size) * chr(AES.block_size - len(s) % AES.block_size)
+pad = lambda s: s + (AES.block_size - len(s) % AES.block_size) * chr(AES.block_size - len(s) % AES.block_size).encode()
 
 def aes_encrypt( seed, key, raw ):
     raw = pad(raw)
@@ -24,6 +24,7 @@ def aes_encrypt( seed, key, raw ):
 def scramble( key, func='md5' ):
     # Ugly but effective, moreover this is not a webapp so who cares.
     # Will raise AttributeError if function is not valid ... auto validation FTW!
+    key = key.encode("utf-8")
     return eval( 'hashlib.%s(key).digest()' % func )
 
 ###
@@ -34,6 +35,7 @@ def convert_to_charset(password, specialchars):
     slen  = len(specialchars)
 
     for c in password:
+        c = chr(c)
         if c.isalnum():
             output += c
         else:
@@ -68,22 +70,22 @@ def main():
 
         aes_out2 = aes_encrypt( key, key2, aes_out1 )
         
-        start    = ord(key[0]) % len(aes_out2)
+        start    = key[0] % len(aes_out2)
         portion  = aes_out2[start:]
         result   = hashlib.sha512(portion).digest()
         longpass = base64.b64encode(result)
         longpass = longpass[0:args.length]
         longpass = convert_to_charset(longpass,  sorted(args.special, reverse=True))
 
-        print "---"
-        print longpass
-        print "---"
+        print("---")
+        print(longpass)
+        print("---")
 
     except AttributeError:
-        print "[ERROR] '%s' is not a valid hashing function." % args.func
+        print("[ERROR] '%s' is not a valid hashing function." % args.func)
 
     except Exception as e:
-        print "[ERROR] %s" % e
+        print("[ERROR] %s" % e)
 
 if __name__ == "__main__":
     main()
