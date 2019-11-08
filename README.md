@@ -16,16 +16,21 @@ How it works:
 <pre>
 ./passcrambler.py --help
 usage: passcrambler.py [-h] --file FILE --login LOGIN [--special SPECIAL]
-                       [--length LENGTH]
+                       [--length LENGTH] [--clip] [--scramble-func FUNC]
 
 Password scrambler
 
 optional arguments:
-  -h, --help         show this help message and exit
-  --file FILE        File used to initialize generation
-  --login LOGIN      Login for which you want to use the password
-  --special SPECIAL  Whitelist of special characters, i.e: '_&#'
-  --length LENGTH    Length of the password, default=30
+  -h, --help            show this help message and exit
+  --file FILE           File used to initialize generation
+  --login LOGIN         Login for which you want to use the password
+  --special SPECIAL     Whitelist of special characters, i.e: '_&#'
+  --length LENGTH       Length of the password, default=30
+  --clip                Copy the generated password into the clipboard instead
+                        of displaying
+  --scramble-func FUNC  Hashing function to use for input data scrambling,
+                        default=md5. Other functions can be found on hashlib
+                        module documentation.
 </pre>
 example:
 <pre>
