@@ -25,7 +25,12 @@ def scramble( key, func='md5' ):
     # Ugly but effective, moreover this is not a webapp so who cares.
     # Will raise AttributeError if function is not valid ... auto validation FTW!
     key = key.encode("utf-8")
-    return eval( 'hashlib.%s(key).digest()' % func )
+    try:
+        return eval( 'hashlib.%s(key).digest()' % func )
+
+    except AttributeError as e:
+        print("[ERROR] Invalid scramble-func: '%s' is not a valid hashing function." % func)
+        raise e
 
 ###
 
@@ -80,9 +85,6 @@ def main():
         print("---")
         print(longpass)
         print("---")
-
-    except AttributeError:
-        print("[ERROR] '%s' is not a valid hashing function." % args.func)
 
     except Exception as e:
         print("[ERROR] %s" % e)
