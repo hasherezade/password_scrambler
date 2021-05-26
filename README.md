@@ -24,7 +24,7 @@ optional arguments:
   -h, --help            show this help message and exit
   --file FILE           File used to initialize generation
   --login LOGIN         Login for which you want to use the password
-  --special SPECIAL     Whitelist of special characters, e.g: '@^$', default='_&#'
+  --special SPECIAL     Whitelist of special characters (e.g. '_&#'), default='_&#'
   --length LENGTH       Length of the password, default=30
   --clip                Copy the generated password into the clipboard instead
                         of displaying

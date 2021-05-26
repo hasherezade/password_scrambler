@@ -59,7 +59,7 @@ def main():
         parser.add_argument('--login', dest="login", default=None, help="Login for which you want to use the password",
                             required=True)
         parser.add_argument('--special', dest="special", default="_&#",
-                            help="Whitelist of special characters, e.g: '@^$', default='_&#'")
+                            help="Whitelist of special characters (e.g. '_&#'), default='_&#'")
         parser.add_argument('--length', dest="length", default=30, help="Length of the password, default=30", type=int)
         parser.add_argument('--clip', dest="clip", default=False,
                             help="Copy the generated password into the clipboard instead of displaying", required=False,
