@@ -16,8 +16,8 @@ Installation
 
 1. Install Python 3 and PIP
 2. Clone this repository
-3. Go inside the repository and install the requirements
-```
+3. Go inside the repository and install the requirements: 
+```console
 pip install -r requirements.txt
 ```
 
