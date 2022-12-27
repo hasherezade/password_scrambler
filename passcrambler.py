@@ -19,7 +19,6 @@ def aes_encrypt(seed, key, raw):
 
 
 def scramble(key, func='md5'):
-    key = key.encode("utf-8")
     try:
         # AES key must be either 16, 24, or 32 bytes long
         proper_key = len(eval('hashlib.%s(key).digest()' % func))
@@ -61,6 +60,7 @@ def main():
         parser.add_argument('--special', dest="special", default="_&#",
                             help="Whitelist of special characters (e.g. '_&#'), default='_&#'")
         parser.add_argument('--length', dest="length", default=30, help="Length of the password, default=30", type=int)
+        parser.add_argument('--loop', dest="loop", default=1, help="How many times the hashing function will be executed, default=1", type=int) 
         parser.add_argument('--clip', dest="clip", default=False,
                             help="Copy the generated password into the clipboard instead of displaying", required=False,
                             action="store_true")
@@ -71,10 +71,16 @@ def main():
         # First thing first, fail if seed file does not exist
         with open(args.file, 'rb') as fd:
             raw = fd.read()
-
+            
+        # get the loop parameter, default to 1 if not set
+        loop = args.loop if (args.loop > 0) else 1
+	
         password = getpass.getpass()
-        key = scramble(password, args.func)
-        vec = scramble(args.login, args.func)
+        key = password.encode("utf-8")
+        vec = args.login.encode("utf-8")
+        for x in range(loop):
+            key = scramble(key, args.func)
+            vec = scramble(vec, args.func)
 
         aes_out1 = aes_encrypt(vec, key, raw)
 
@@ -86,7 +92,10 @@ def main():
 
         start = key[0] % len(aes_out2)
         portion = aes_out2[start:]
-        result = hashlib.sha512(portion).digest()
+        result = portion
+        for x in range(loop):
+            result = hashlib.sha512(result).digest()
+            
         longpass = base64.b64encode(result)
         longpass = longpass[0:args.length]
         longpass = convert_to_charset(longpass, sorted(args.special, reverse=True))
