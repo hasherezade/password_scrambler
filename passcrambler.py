@@ -60,7 +60,7 @@ def main():
         parser.add_argument('--special', dest="special", default="_&#",
                             help="Whitelist of special characters (e.g. '_&#'), default='_&#'")
         parser.add_argument('--length', dest="length", default=30, help="Length of the password, default=30", type=int)
-        parser.add_argument('--loop', dest="loop", default=1, help="How many times the hashing function will be executed, default=1", type=int) 
+        parser.add_argument('--loop', dest="loop", default=1, help="How many times the hashing function will be executed, default=1", type=int)
         parser.add_argument('--clip', dest="clip", default=False,
                             help="Copy the generated password into the clipboard instead of displaying", required=False,
                             action="store_true")
@@ -74,7 +74,7 @@ def main():
             
         # get the loop parameter, default to 1 if not set
         loop = args.loop if (args.loop > 0) else 1
-	
+
         password = getpass.getpass()
         key = password.encode("utf-8")
         vec = args.login.encode("utf-8")
