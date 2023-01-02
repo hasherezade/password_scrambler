@@ -78,7 +78,7 @@ def main():
         password = getpass.getpass()
         key = password.encode("utf-8")
         vec = args.login.encode("utf-8")
-        for x in range(loop):
+        for _ in range(loop):
             key = scramble(key, args.func)
             vec = scramble(vec, args.func)
 
